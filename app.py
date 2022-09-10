@@ -34,8 +34,9 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    message = TextSendMessage(text=event.message.text)
-    line_bot_api.reply_message(event.reply_token, text = f"Testing {message}")
+    msg= []
+    msg.append(TextSendMessage(text=f'Test!!!你的訊息是:{event.message.text}'))
+    line_bot_api.reply_message(event.reply_token, messages=msg[:5])
 
 if __name__ == "__main__":
     app.run()
