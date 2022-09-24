@@ -1,5 +1,8 @@
+from asyncio.windows_events import NULL
 from flask import Flask, request, abort
-import os
+import os,re
+
+from src.handle import spider,event_data
 
 from linebot import (
     LineBotApi, WebhookHandler
@@ -35,7 +38,13 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     msg= []
-    msg.append(TextSendMessage(text=f'Test!!!你的訊息是:{event.message.text}'))
+    if re.match(r'^[e][v][e][n][t][-][a-z]{2}$', event.message.text):
+        eventData = event_data()
+        output = spider(event.message.text[5:],eventData)
+        #if output != NULL: msg.append(TextSendMessage(text=output))
+    elif re.match(r'^[e][v][e][n][t][-][a-z]{2}[-][0-9]*$', event.message.text):
+        eventData = event_data()
+        msg.append(TextSendMessage(text=f'Test!!!你的訊息是:{event.message.text}'))
     line_bot_api.reply_message(event.reply_token, messages=msg[:5])
 
 if __name__ == "__main__":
