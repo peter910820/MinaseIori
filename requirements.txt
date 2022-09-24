@@ -2,3 +2,5 @@ gunicorn
 flask
 jinja2
 line-bot-sdk
+requests
+json
