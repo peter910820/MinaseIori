@@ -1,7 +1,7 @@
 from flask import Flask, request, abort
 import os,re
 
-from src.handle import spider,event_data,preprocessing
+from src.handle import spider,event_data,preprocessing,singlePreprocessing
 
 from linebot import (
     LineBotApi, WebhookHandler
@@ -36,17 +36,17 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    # msg= []
     if re.match(r'^[e][v][e][n][t][-][a-z]{2}$', event.message.text):
         eventData = event_data()
-        print(eventData)
         opt = preprocessing(event.message.text[6:],eventData)
         output = spider(opt, eventData)
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text=str(output)))
     elif re.match(r'^[e][v][e][n][t][-][a-z]{2}[-][0-9]*$', event.message.text):
         eventData = event_data()
-        # msg.append(TextSendMessage(text=f'Test!!!你的訊息是:{event.message.text}'))
-    # line_bot_api.reply_message(event.reply_token, messages=msg[:5])
+        opt = singlePreprocessing(event.message.text[6:],eventData)
+        output = spider(opt, eventData)
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text=str(output)))
+    else: return
 
 if __name__ == "__main__":
     app.run()
