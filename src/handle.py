@@ -14,15 +14,18 @@ class ApiV1:
                                "lp": "1,2,3,10,100,250,500,1000"}
 
     def get_data(self):
-        event = requests.get(self.api_url)
-        data = json.loads(event.text)
-        self.event_data["id"] = data[-1]['id']
-        self.event_data["name"] = data[-1]['name']
-        self.event_data["begin_date"] = data[-1]['schedule']['beginDate']
-        self.event_data["end_date"] = data[-1]['schedule']['endDate']
+        try:
+            event = requests.get(self.api_url)
+            data = json.loads(event.text)
+            self.event_data["id"] = data[-1]['id']
+            self.event_data["name"] = data[-1]['name']
+            self.event_data["begin_date"] = data[-1]['schedule']['beginDate']
+            self.event_data["end_date"] = data[-1]['schedule']['endDate']
 
-        self.url_preprocessing()
-        return self.crawler()
+            self.url_preprocessing()
+            return self.crawler()
+        except Exception as e:
+            return e
     
     def url_preprocessing(self):
         if self.is_single:
@@ -38,6 +41,14 @@ class ApiV1:
             case "lp":
                 parmeter = "loungePoint"
                 self.pattern_name =  "寮榜線"
+            case "_":
+                match self.pattern[0]:
+                    case "p":
+                        return "引數錯誤，你是不是指 -pt?"
+                    case "h":
+                        return "引數錯誤，你是不是指 -hs?"
+                    case "l":
+                        return "引數錯誤，你是不是指 -lp?"
         if self.is_single:
             self.target_url = f"https://api.matsurihi.me/mltd/v1/events/{self.event_data['id']}/rankings/logs/{parmeter}/{ranker}?prettyPrint=true"
         else:
