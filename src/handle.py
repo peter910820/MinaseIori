@@ -53,7 +53,7 @@ class ApiV1:
         try:
             for ranker_record in target_content:
                 if len(ranker_record["data"]) != 0:
-                    gap = ranker_record["data"][-1]["score"]-ranker_record["data'][-2]['score"]
+                    gap = ranker_record["data"][-1]["score"] - ranker_record["data"][-2]["score"]
                     self.output_content += f"{ranker_record['rank']}位  {ranker_record['data'][-1]['score']}  pt(+{gap})\n"
         except Exception as e:
             return e
