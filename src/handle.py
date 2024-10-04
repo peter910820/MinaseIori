@@ -21,12 +21,12 @@ class ApiV1:
         self.event_data["begin_date"] = data[-1]['schedule']['beginDate']
         self.event_data["end_date"] = data[-1]['schedule']['endDate']
 
-        self.url_preprocessing(self)
-        return self.crawler(self)
+        self.url_preprocessing()
+        return self.crawler()
     
     def url_preprocessing(self):
         if self.is_single:
-            ranker = self.pattern[2:]
+            ranker = self.pattern[3:]
             self.pattern = self.pattern[0:2]
         match self.pattern:
             case "pt":
@@ -48,10 +48,14 @@ class ApiV1:
         target = requests.get(self.target_url)
         target_content = json.loads(target.text)
         #output process
-        output_content += f"{self.event_data['name']}\n開始時間:{self.event_data['begin_date']}\n結束時間:{self.event_data['end_date']}\n"
-        output_content += "(名次/分數/半小時增加量)\n"
-        for ranker_record in target_content:
-            gap = ranker_record['data'][-1]['score']-ranker_record['data'][-2]['score']
-            output_content += f"{ranker_record['rank']}位  {ranker_record['data'][-1]['score']}  pt(+{gap})\n"
-            
-        return output_content
+        self.output_content += f"{self.event_data['name']}\n開始時間:{self.event_data['begin_date']}\n結束時間:{self.event_data['end_date']}\n"
+        self.output_content += "(名次/分數/半小時增加量)\n"
+        try:
+            for ranker_record in target_content:
+                if len(ranker_record["data"]) != 0:
+                    gap = ranker_record["data"][-1]["score"]-ranker_record["data'][-2]['score"]
+                    self.output_content += f"{ranker_record['rank']}位  {ranker_record['data'][-1]['score']}  pt(+{gap})\n"
+        except Exception as e:
+            return e
+        
+        return self.output_content
