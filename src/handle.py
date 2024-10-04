@@ -1,15 +1,18 @@
 import json, requests
 
 class ApiV1:
-    def __init__(self, pattern, status) -> None:
+    def __init__(self, pattern, is_single: bool) -> None:
         self.event_data = {}
         self.rank = []
         self.output_content = ""
         self.api_url = "https://api.matsurihi.me/mltd/v1/events"
-        self.status = status
+        self.is_single = is_single
         self.pattern = pattern
         self.pattern_name = ""
         self.target_url = ""
+        self.defalut_format = {"pt": "1,2,3,100,2500,5000,10000,25000,50000,100000", 
+                               "hs": "1,2,3,100,2000,5000,10000,20000,100000", 
+                               "lp": "1,2,3,10,100,250,500,1000"}
 
     def get_data(self):
         event = requests.get(self.api_url)
@@ -23,19 +26,23 @@ class ApiV1:
         self.crawler(self)
     
     def url_preprocessing(self):
+        if self.is_single:
+            ranker = self.pattern[2:]
+            self.pattern = self.pattern[0:2]
         match self.pattern:
             case "pt":
                 parmeter = "eventPoint"
                 self.pattern_name =  "PT榜線"
-                self.target_url = f"https://api.matsurihi.me/mltd/v1/events/{self.event_data["id"]}/rankings/logs/{parmeter}/1,2,3,100,2500,5000,10000,25000,50000,100000?prettyPrint=true"
             case "hs":
                 parmeter = "highScore"
                 self.pattern_name =  "高分榜線"
-                self.target_url = f"https://api.matsurihi.me/mltd/v1/events/{self.event_data["id"]}/rankings/logs/{parmeter}/1,2,3,100,2000,5000,10000,20000,100000?prettyPrint=true"
             case "lp":
                 parmeter = "loungePoint"
                 self.pattern_name =  "寮榜線"
-                self.target_url = f"https://api.matsurihi.me/mltd/v1/events/{self.event_data["id"]}/rankings/logs/{parmeter}/1,2,3,10,100,250,500,1000?prettyPrint=true"
+        if self.is_single:
+            self.target_url = f"https://api.matsurihi.me/mltd/v1/events/{self.event_data["id"]}/rankings/logs/{parmeter}/{ranker[2:]}?prettyPrint=true"
+        else:
+            self.target_url = f"https://api.matsurihi.me/mltd/v1/events/{self.event_data["id"]}/rankings/logs/{parmeter}/{self.defalut_format[self.pattern]}?prettyPrint=true"
 
     def crawler(self, data, eventOptions):
         target = requests.get(self.target_url)
