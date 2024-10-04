@@ -22,7 +22,9 @@ class ApiV1:
             self.event_data["begin_date"] = data[-1]['schedule']['beginDate']
             self.event_data["end_date"] = data[-1]['schedule']['endDate']
 
-            self.url_preprocessing()
+            w = self.url_preprocessing()
+            if w != None:
+                return w
             return self.crawler()
         except Exception as e:
             return e
@@ -49,6 +51,8 @@ class ApiV1:
                         return "引數錯誤，你是不是指 -hs?"
                     case "l":
                         return "引數錯誤，你是不是指 -lp?"
+                    case _:
+                        return "引數錯誤"
         if self.is_single:
             self.target_url = f"https://api.matsurihi.me/mltd/v1/events/{self.event_data['id']}/rankings/logs/{parmeter}/{ranker}?prettyPrint=true"
         else:

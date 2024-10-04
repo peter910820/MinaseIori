@@ -40,8 +40,10 @@ def handle_message(event):
     elif re.match(r'^[e][v][e][n][t][-][a-z]{2}[-][0-9]*$', event.message.text):
         msg = ApiV1(event.message.text[6:], True)
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text=str(msg.get_data())))
+    elif event.message.text.startswith("event"):
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text=str("指令格式有誤")))
     else:
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(text=str("ERROR")))
+        pass
 
 if __name__ == "__main__":
     app.run(port=5001)
