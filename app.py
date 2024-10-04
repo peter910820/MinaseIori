@@ -1,6 +1,8 @@
-from flask import Flask, request, abort
+from dotenv import load_dotenv
+from flask import abort, request, Flask
 import os,re
 
+from src.handle import ApiV1
 from src.handle import spider,event_data,preprocessing,singlePreprocessing
 
 from linebot import (
@@ -11,13 +13,11 @@ from linebot.exceptions import (
 )
 from linebot.models import *
 
+load_dotenv()
+
 app = Flask(__name__)
-
-
-line_bot_api = LineBotApi("ROh5//UBYjitP0iq9YUHRd/Is8/IyflOkD1k9FdCTNm9y0GJ5Gdb2zIJ2a7kAjS09aXd/R2nal1KzIwruUyPUuiOiroUk5gnaClajEvlpzBubGLQI8EQVzzVyduj3JrCwOdht+dv3susMPLZOSsGKAdB04t89/1O/w1cDnyilFU=")
-
-handler = WebhookHandler("dccf14eb2af50891e68802225ce51583")
-
+line_bot_api = LineBotApi(os.getenv("TOKEN"))
+handler = WebhookHandler(os.getenv("SECRET"))
 
 @app.route("/callback", methods=['POST'])
 def callback():
@@ -32,7 +32,6 @@ def callback():
     except InvalidSignatureError:
         abort(400)
     return 'OK'
-
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
@@ -49,4 +48,4 @@ def handle_message(event):
     else: return
 
 if __name__ == "__main__":
-    app.run()
+    app.run(port=5001)
