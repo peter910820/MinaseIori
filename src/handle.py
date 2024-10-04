@@ -41,7 +41,7 @@ class ApiV1:
             case "lp":
                 parmeter = "loungePoint"
                 self.pattern_name =  "寮榜線"
-            case "_":
+            case _:
                 match self.pattern[0]:
                     case "p":
                         return "引數錯誤，你是不是指 -pt?"
