@@ -36,10 +36,10 @@ def callback():
 def handle_message(event):
     if re.match(r'^[e][v][e][n][t][-][a-z]{2}$', event.message.text):
         msg = ApiV1(event.message.text[6:], False)
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(text=str(msg)))
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text=str(msg.get_data())))
     elif re.match(r'^[e][v][e][n][t][-][a-z]{2}[-][0-9]*$', event.message.text):
         msg = ApiV1(event.message.text[6:], True)
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(text=str(msg)))
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text=str(msg.get_data())))
     else:
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text=str("ERROR")))
 

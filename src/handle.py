@@ -39,9 +39,9 @@ class ApiV1:
                 parmeter = "loungePoint"
                 self.pattern_name =  "寮榜線"
         if self.is_single:
-            self.target_url = f"https://api.matsurihi.me/mltd/v1/events/{self.event_data["id"]}/rankings/logs/{parmeter}/{ranker}?prettyPrint=true"
+            self.target_url = f"https://api.matsurihi.me/mltd/v1/events/{self.event_data['id']}/rankings/logs/{parmeter}/{ranker}?prettyPrint=true"
         else:
-            self.target_url = f"https://api.matsurihi.me/mltd/v1/events/{self.event_data["id"]}/rankings/logs/{parmeter}/{self.defalut_format[self.pattern]}?prettyPrint=true"
+            self.target_url = f"https://api.matsurihi.me/mltd/v1/events/{self.event_data['id']}/rankings/logs/{parmeter}/{self.defalut_format[self.pattern]}?prettyPrint=true"
 
     def crawler(self):
         #get record data
