@@ -1,15 +1,18 @@
-# ioriBot
+# MinaseIori
+## a linebot to query the ranking of MLTD current event
  
 伊織醬喵喵小公主Bot(名字不是我取的)
 
-此LINEBOT可用來查詢MLTD日版榜線，使用說明參見下方指令集。
+此LINEBOT可用來查詢MLTD榜線，使用說明參見下方指令集。
 
-*2024/10/5 重構完畢(暫時)
+* 2024/10/5 重構部分程式碼並架設到自己的VPS上(API暫時使用v1)
 
-* 9/10: 測試koyeb
+* 9/12: 
+  1. 修正bug，簡化程式碼。
+  2. 建立指定排名查詢。
+  3. 架設到koyeb(正式版)
 * 9/11: 建立榜線查詢
-* 9/12: 修正bug。簡化程式碼，建立指定排名查詢
-* 9/12: 架設到koyeb(正式版)
+* 9/10: 測試koyeb
 
 ## LineBot URL
 ![URL](https://github.com/peter910820/ioribot/blob/main/QRcode.png)
