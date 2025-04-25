@@ -56,23 +56,23 @@ class ApiV1:
                     case _:
                         return '引數錯誤'
         if self.is_single:
-            self.target_url = f'https://api.matsurihi.me/mltd/v1/events/{self.event_data['id']}/rankings/logs/{parmeter}/{ranker}?prettyPrint=true'
+            self.target_url = f'https://api.matsurihi.me/mltd/v1/events/{self.event_data["id"]}/rankings/logs/{parmeter}/{ranker}?prettyPrint=true'
         else:
-            self.target_url = f'https://api.matsurihi.me/mltd/v1/events/{self.event_data['id']}/rankings/logs/{parmeter}/{self.defalut_format[self.pattern]}?prettyPrint=true'
+            self.target_url = f'https://api.matsurihi.me/mltd/v1/events/{self.event_data["id"]}/rankings/logs/{parmeter}/{self.defalut_format[self.pattern]}?prettyPrint=true'
 
     def crawler(self):
         # get record data
         target = requests.get(self.target_url)
         target_content = json.loads(target.text)
         # output process
-        self.output_content += f'{self.event_data['name']}\n開始時間:{self.event_data['begin_date']}\n結束時間:{self.event_data['end_date']}\n'
+        self.output_content += f'{self.event_data["name"]}\n開始時間:{self.event_data["begin_date"]}\n結束時間:{self.event_data["end_date"]}\n'
         self.output_content += '(名次/分數/半小時增加量)\n'
         try:
             for ranker_record in target_content:
                 if len(ranker_record['data']) != 0:
                     gap = ranker_record['data'][-1]['score'] - \
                         ranker_record['data'][-2]['score']
-                    self.output_content += f'{ranker_record['rank']}位  {ranker_record['data'][-1]['score']}  pt(+{gap})\n'
+                    self.output_content += f'{ranker_record["rank"]}位  {ranker_record["data"][-1]["score"]}  pt(+{gap})\n'
         except Exception as e:
             return e
 
