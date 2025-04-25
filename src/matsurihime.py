@@ -2,7 +2,7 @@ import json
 import requests
 
 
-class ApiV1:
+class ApiV1(object):
     def __init__(self, pattern, is_single: bool) -> None:
         self.event_data = {}
         self.output_content = ''
