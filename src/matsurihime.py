@@ -24,14 +24,14 @@ class ApiV1(object):
             self.event_data['begin_date'] = data[-1]['schedule']['beginDate']
             self.event_data['end_date'] = data[-1]['schedule']['endDate']
 
-            w = self.url_preprocessing()
+            w = self.__url_preprocessing()
             if w != None:
                 return w
-            return self.crawler()
+            return self.__crawler()
         except Exception as e:
             return e
 
-    def url_preprocessing(self):
+    def __url_preprocessing(self):
         if self.is_single:
             ranker = self.pattern[3:]
             self.pattern = self.pattern[0:2]
@@ -60,7 +60,7 @@ class ApiV1(object):
         else:
             self.target_url = f'https://api.matsurihi.me/mltd/v1/events/{self.event_data["id"]}/rankings/logs/{parmeter}/{self.defalut_format[self.pattern]}?prettyPrint=true'
 
-    def crawler(self):
+    def __crawler(self):
         # get record data
         target = requests.get(self.target_url)
         target_content = json.loads(target.text)
