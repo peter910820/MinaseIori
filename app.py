@@ -52,13 +52,12 @@ def callback():
     return 'OK'
 
 
-@handler.add(MessageEvent, message=TextMessage)
+@handler.add(MessageEvent, message=TextMessageContent)
 def handle_message(event):
     with ApiClient(configuration) as api_client:
         line_bot_api = MessagingApi(api_client)
         msg = None
 
-        logger.debug(event.message.text)
         try:
             if re.match(r'^event-[a-z]{2}$', event.message.text, re.IGNORECASE):
                 api = ApiV1(event.message.text[6:], False)
