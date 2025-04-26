@@ -62,9 +62,11 @@ def handle_message(event):
             if re.match(r'^event-[a-z]{2}$', event.message.text):
                 api = ApiV1(event.message.text[6:], False)
                 msg = TextMessage(text=str(api.get_data()))  # type: ignore
+                logger.info("預設查詢成功")
             elif re.match(r'^event-[-][a-z]{2}[-][0-9]*$', event.message.text):
                 api = ApiV1(event.message.text[6:], True)
                 msg = TextMessage(text=str(msg.get_data()))  # type: ignore
+                logger.info("查詢成功")
             else:
                 pass
 
