@@ -14,4 +14,4 @@ if [[ ! -d "$VENV_PATH" ]]; then
 fi
 
 # 直接執行虛擬環境內的 Python，不需要額外 activate, deactivate
-"$VENV_PATH/bin/python" "$SCRIPT_DIR/app.py"
+nohup "$VENV_PATH/bin/python" "$SCRIPT_DIR/app.py" &
